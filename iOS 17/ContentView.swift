@@ -9,15 +9,19 @@ import SwiftUI
 
 struct ContentView: View {
 	@State var isTapped = false
-	
+	@State var time = Date.now
+	let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
+	@State var isActive = false
+
 	var body: some View {
 		ZStack {
 			Image(.image1)
 				.resizable()
 				.aspectRatio(contentMode: .fill)
-				.frame(height: 300)
-				.cornerRadius(20)
-				.ignoresSafeArea()
+				.frame(height: isTapped ? 600 : 300)
+				.frame(width: isTapped ? 393 : 360)
+				.cornerRadius(isTapped ? 0 : 20)
+				.offset(y: isTapped ? -200 : 0)
 			
 			VStack(alignment: .center) {
 				Text("modern architecture, an isometric tiny house, cute illustration, minimalist, vector art, night view")
@@ -51,9 +55,10 @@ struct ContentView: View {
 							.symbolEffect(.pulse)
 						Divider()
 						Image(systemName: "sparkle.magnifyingglass")
-							.symbolEffect(.scale.up)
+							.symbolEffect(.scale.up, isActive: isActive)
 						Divider()
 						Image(systemName: "face.smiling")
+							.symbolEffect(.appear, isActive: isActive)
 					}
 					.padding()
 					.frame(height: 44)
@@ -82,24 +87,35 @@ struct ContentView: View {
 					.strokeBorder(linearGradient)
 			)
 			.cornerRadius(20.0)
-			.padding(20)
-			.offset(y: 80)
-			
+			.padding(40)
+			.offset(y: isTapped ? 220 : 80)
+
 			HStack(spacing: 30) {
 				Image(systemName: "wand.and.rays")
 					.frame(width:44)
 					.symbolEffect(.variableColor.iterative.reversing, options: .speed(3))
 					.symbolEffect(.bounce, value: isTapped)
+					.blur(radius: isTapped ? 0 : 20)
+					.opacity(isTapped ? 1 : 0)
 				Image(systemName: isTapped ? "pause.fill" : "play.fill")
 					.frame(width:44)
 					.contentTransition(.symbolEffect(.replace))
 					.onTapGesture {
-						isTapped.toggle()
+						withAnimation(.bouncy) {
+							isTapped.toggle()
+						}
 					}
 				Image(systemName: "bell.and.waves.left.and.right.fill")
 					.frame(width:44)
 					.symbolEffect(.bounce, options: .speed(3).repeat(3), value: isTapped)
+					.blur(radius: isTapped ? 0 : 20)
+					.opacity(isTapped ? 1 : 0)
+					.onReceive(timer) { value in
+						time = value
+						isActive.toggle()
+					}
 			}
+			.frame(width: isTapped ? 220 : 50)
 			.foregroundStyle(.primary, .white)
 			.font(.largeTitle)
 			.padding(20.0)
@@ -109,10 +125,9 @@ struct ContentView: View {
 					.strokeBorder(linearGradient)
 			)
 			.cornerRadius(20.0)
-			.offset(y: -44)
+			.offset(y: isTapped ? 40 : -44)
 		}
 		.frame(maxWidth: 400)
-		.padding(20)
 		.dynamicTypeSize(.xSmall ... .large)
 	}
 	var linearGradient: LinearGradient {
