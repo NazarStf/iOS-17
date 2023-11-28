@@ -12,6 +12,12 @@ struct ContentView: View {
 	@State var time = Date.now
 	let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 	@State var isActive = false
+	@State var isDownloading = false
+	
+	struct AnimationValues {
+		var position = CGPoint(x: 0, y: 0)
+		var scale = 1.0
+	}
 	
 	var body: some View {
 		ZStack {
@@ -30,6 +36,25 @@ struct ContentView: View {
 				.phaseAnimator([1, 2], trigger: isTapped, content: { content, phase in
 					content.blur(radius: phase == 2 ? 100 : 0)
 				})
+			
+			Circle()
+				.fill(.thinMaterial)
+				.frame(width: 100)
+				.overlay(Circle().stroke(.secondary))
+				.overlay(Image(systemName: "photo").font(.largeTitle))
+				.keyframeAnimator(initialValue: AnimationValues(), trigger: isDownloading) { content, value in
+					content.offset(x: value.position.x, y: value.position.y)
+						.scaleEffect(value.scale)
+				} keyframes: { value in
+					KeyframeTrack(\.scale) {
+						CubicKeyframe(1.2, duration: 0.5)
+						CubicKeyframe(1, duration: 0.5)
+					}
+					KeyframeTrack(\.position) {
+						SpringKeyframe(CGPoint(x: 100, y: -100), duration: 0.5, spring: .bouncy)
+						CubicKeyframe(CGPoint(x: 400, y: 1000), duration: 0.5)
+					}
+				}
 			
 			content
 				.padding(20.0)
@@ -127,6 +152,10 @@ struct ContentView: View {
 							.strokeBorder(linearGradient)
 					)
 					.offset(x: 20, y: 20)
+					.symbolEffect(.bounce, value: isDownloading)
+					.onTapGesture {
+						isDownloading.toggle()
+					}
 			}
 		}
 	}
