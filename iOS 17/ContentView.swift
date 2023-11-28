@@ -13,6 +13,7 @@ struct ContentView: View {
 	let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 	@State var isActive = false
 	@State var isDownloading = false
+	let startDate = Date()
 	
 	struct AnimationValues {
 		var position = CGPoint(x: 0, y: 0)
@@ -20,77 +21,98 @@ struct ContentView: View {
 	}
 	
 	var body: some View {
-		ZStack {
-			Image(.image1)
-				.resizable()
-				.aspectRatio(contentMode: .fill)
-				.frame(height: isTapped ? 600 : 300)
-				.frame(width: isTapped ? 393 : 360)
-				.cornerRadius(isTapped ? 0 : 20)
-				.overlay(
-					RoundedRectangle(cornerRadius: 20)
-						.strokeBorder(linearGradient)
-						.opacity(isTapped ? 0 : 1)
-				)
-				.offset(y: isTapped ? -200 : 0)
-				.phaseAnimator([1, 2], trigger: isTapped, content: { content, phase in
-					content.blur(radius: phase == 2 ? 100 : 0)
-				})
-			
-			Circle()
-				.fill(.thinMaterial)
-				.frame(width: 100)
-				.overlay(Circle().stroke(.secondary))
-				.overlay(Image(systemName: "photo").font(.largeTitle))
-				.keyframeAnimator(initialValue: AnimationValues(), trigger: isDownloading) { content, value in
-					content.offset(x: value.position.x, y: value.position.y)
-						.scaleEffect(value.scale)
-				} keyframes: { value in
-					KeyframeTrack(\.scale) {
-						CubicKeyframe(1.2, duration: 0.5)
-						CubicKeyframe(1, duration: 0.5)
-					}
-					KeyframeTrack(\.position) {
-						SpringKeyframe(CGPoint(x: 100, y: -100), duration: 0.5, spring: .bouncy)
-						CubicKeyframe(CGPoint(x: 400, y: 1000), duration: 0.5)
-					}
+		TimelineView(.animation) { context in
+			ZStack {
+				TimelineView(.animation) { context in
+					Image(.image1)
+						.resizable()
+						.aspectRatio(contentMode: .fill)
+						.frame(height: isTapped ? 600 : 300)
+						.frame(width: isTapped ? 393 : 360)
+						.overlay(
+							RoundedRectangle(cornerRadius: 20)
+								.colorEffect(ShaderLibrary.noise(.float(startDate.timeIntervalSinceNow)))
+								.blendMode(.softLight)
+						)
+						.layerEffect(ShaderLibrary.emboss(.float(1)), maxSampleOffset: .zero)
+						.layerEffect(ShaderLibrary.pixellate(.float(10)), maxSampleOffset: .zero)
+						.cornerRadius(isTapped ? 0 : 20)
+						.overlay(
+							RoundedRectangle(cornerRadius: 20)
+								.strokeBorder(linearGradient)
+								.opacity(isTapped ? 0 : 1)
+						)
+						.offset(y: isTapped ? -200 : 0)
+						.phaseAnimator([1, 2], trigger: isTapped, content: { content, phase in
+							content.blur(radius: phase == 2 ? 100 : 0)
+					})
 				}
-			
-			content
-				.padding(20.0)
-				.background(.ultraThinMaterial)
-				.overlay(
-					RoundedRectangle(cornerRadius: 20)
-						.strokeBorder(linearGradient)
-				)
-				.cornerRadius(20.0)
-				.padding(40)
-				.offset(y: isTapped ? 220 : 80)
-				.phaseAnimator([1, 1.1], trigger: isTapped) { content, phase in
-					content.scaleEffect(phase)
-				} animation: { phase in
-					switch phase {
-					case 1: .bouncy
-					case 1.1: .easeOut(duration: 1)
-					default: .easeInOut
+				
+				Circle()
+					.fill(.thinMaterial)
+					.frame(width: 100)
+					.overlay(Circle().stroke(.secondary))
+					.overlay(Image(systemName: "photo").font(.largeTitle))
+					.keyframeAnimator(initialValue: AnimationValues(), trigger: isDownloading) { content, value in
+						content.offset(x: value.position.x, y: value.position.y)
+							.scaleEffect(value.scale)
+					} keyframes: { value in
+						KeyframeTrack(\.scale) {
+							CubicKeyframe(1.2, duration: 0.5)
+							CubicKeyframe(1, duration: 0.5)
+						}
+						KeyframeTrack(\.position) {
+							SpringKeyframe(CGPoint(x: 100, y: -100), duration: 0.5, spring: .bouncy)
+							CubicKeyframe(CGPoint(x: 400, y: 1000), duration: 0.5)
+						}
 					}
-				}
-			
-			play
-				.frame(width: isTapped ? 220 : 50)
-				.foregroundStyle(.primary, .white)
-				.font(.largeTitle)
-				.padding(20.0)
-				.background(.ultraThinMaterial)
-				.overlay(
-					RoundedRectangle(cornerRadius: 20)
-						.strokeBorder(linearGradient)
-				)
-				.cornerRadius(20.0)
-				.offset(y: isTapped ? 40 : -44)
+				
+				content
+					.padding(20.0)
+					.background(.ultraThinMaterial)
+					.overlay(
+						RoundedRectangle(cornerRadius: 20)
+							.strokeBorder(linearGradient)
+					)
+					.cornerRadius(20.0)
+					.padding(40)
+					.offset(y: isTapped ? 220 : 80)
+					.phaseAnimator([1, 1.1], trigger: isTapped) { content, phase in
+						content.scaleEffect(phase)
+					} animation: { phase in
+						switch phase {
+						case 1: .bouncy
+						case 1.1: .easeOut(duration: 1)
+						default: .easeInOut
+						}
+					}
+				
+				play
+					.frame(width: isTapped ? 220 : 50)
+					.foregroundStyle(
+						ShaderLibrary.angledFill(
+							.float(10),
+							.float(10),
+							.color(.blue)
+						)
+					)
+					.foregroundStyle(.primary, .white)
+					.font(.largeTitle)
+					.padding(20.0)
+					.background(.ultraThinMaterial)
+					.overlay(
+						RoundedRectangle(cornerRadius: 20)
+							.strokeBorder(linearGradient)
+					)
+					.cornerRadius(20.0)
+					.offset(y: isTapped ? 40 : -44)
+			}
+			.frame(maxWidth: 400)
+			.dynamicTypeSize(.xSmall ... .large)
+			.frame(maxWidth: .infinity, maxHeight: .infinity)
+			.background(.primary.opacity(0.001))
+		.distortionEffect(ShaderLibrary.simpleWave(.float(startDate.timeIntervalSinceNow)), maxSampleOffset: CGSize(width: 100, height: 100))
 		}
-		.frame(maxWidth: 400)
-		.dynamicTypeSize(.xSmall ... .large)
 	}
 	var linearGradient: LinearGradient {
 		LinearGradient(colors: [.clear, .primary.opacity(0.3), .clear], startPoint: .topLeading, endPoint: .bottomTrailing)
