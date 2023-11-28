@@ -11,6 +11,7 @@
 		7443BB792B15DBE800DF8871 /* example-swiftui-shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7443BB782B15DBE800DF8871 /* example-swiftui-shaders.metal */; };
 		7443BB7B2B15EA7B00DF8871 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7443BB7A2B15EA7B00DF8871 /* Extensions.swift */; };
 		7443BB7D2B15EE0B00DF8871 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7443BB7C2B15EE0B00DF8871 /* CardView.swift */; };
+		7443BB7F2B15F0E600DF8871 /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7443BB7E2B15F0E600DF8871 /* Card.swift */; };
 		74FF93942B14872300D8902C /* iOS_17App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FF93932B14872300D8902C /* iOS_17App.swift */; };
 		74FF93962B14872300D8902C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FF93952B14872300D8902C /* ContentView.swift */; };
 		74FF93982B14872300D8902C /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FF93972B14872300D8902C /* Item.swift */; };
@@ -23,6 +24,7 @@
 		7443BB782B15DBE800DF8871 /* example-swiftui-shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = "example-swiftui-shaders.metal"; sourceTree = "<group>"; };
 		7443BB7A2B15EA7B00DF8871 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		7443BB7C2B15EE0B00DF8871 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
+		7443BB7E2B15F0E600DF8871 /* Card.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		74FF93902B14872300D8902C /* iOS 17.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS 17.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		74FF93932B14872300D8902C /* iOS_17App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_17App.swift; sourceTree = "<group>"; };
 		74FF93952B14872300D8902C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -63,6 +65,7 @@
 			children = (
 				74FF93932B14872300D8902C /* iOS_17App.swift */,
 				74FF93952B14872300D8902C /* ContentView.swift */,
+				7443BB7E2B15F0E600DF8871 /* Card.swift */,
 				7443BB7C2B15EE0B00DF8871 /* CardView.swift */,
 				7443BB7A2B15EA7B00DF8871 /* Extensions.swift */,
 				74FF93972B14872300D8902C /* Item.swift */,
@@ -159,6 +162,7 @@
 				74FF93962B14872300D8902C /* ContentView.swift in Sources */,
 				74FF93982B14872300D8902C /* Item.swift in Sources */,
 				74FF93942B14872300D8902C /* iOS_17App.swift in Sources */,
+				7443BB7F2B15F0E600DF8871 /* Card.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

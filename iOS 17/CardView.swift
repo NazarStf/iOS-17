@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct CardView: View {
+	var card: Card = cards[0]
+	
 	@State var isTapped = false
 	@State var time = Date.now
 	let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
@@ -37,17 +39,22 @@ struct CardView: View {
 				.frame(maxWidth: 400)
 				.dynamicTypeSize(.xSmall ... .large)
 				.frame(maxWidth: .infinity, maxHeight: .infinity)
+				.padding(.vertical, 10)
 				.background(.primary.opacity(0.001))
-				.distortionEffect(ShaderLibrary.simpleWave(.float(startDate.timeIntervalSinceNow)), maxSampleOffset: CGSize(width: 100, height: 100), isEnabled: hasSimpleWave)
-				.visualEffect { content, proxy in
-					content
-						.distortionEffect(ShaderLibrary.complexWave(
-							.float(startDate.timeIntervalSinceNow),
-							.float2(proxy.size),
-							.float(0.5),
-							.float(8),
-							.float(10)
-						), maxSampleOffset: .zero, isEnabled: hasComplexWave)
+				.if(hasSimpleWave, transform: { view in
+					view.distortionEffect(ShaderLibrary.simpleWave(.float(startDate.timeIntervalSinceNow)), maxSampleOffset: CGSize(width: 100, height: 100), isEnabled: hasSimpleWave)
+				})
+				.if(hasComplexWave) { view in
+					view.visualEffect { content, proxy in
+						content
+						 .distortionEffect(ShaderLibrary.complexWave(
+							 .float(startDate.timeIntervalSinceNow),
+							 .float2(proxy.size),
+							 .float(0.5),
+							 .float(8),
+							 .float(10)
+						 ), maxSampleOffset: .zero, isEnabled: hasComplexWave)
+				 }
 				}
 		}
 	}
@@ -58,21 +65,30 @@ struct CardView: View {
 	var layout: some View {
 		ZStack {
 			TimelineView(.animation) { context in
-				Image(.image1)
+				card.image
 					.resizable()
 					.aspectRatio(contentMode: .fill)
 					.frame(height: isTapped ? 600 : 300)
 					.frame(width: isTapped ? 393 : 360)
-					.colorEffect(ShaderLibrary.circleLoader(.boundingRect, .float(startDate.timeIntervalSinceNow)), isEnabled: hasPattern)
-					.overlay(
-						RoundedRectangle(cornerRadius: 20)
-							.colorEffect(ShaderLibrary.noise(.float(startDate.timeIntervalSinceNow)), isEnabled: hasNoise)
-							.blendMode(.overlay)
-							.opacity(hasNoise ? 1 : 0)
-					)
-					.layerEffect(ShaderLibrary.emboss(.float(number)), maxSampleOffset: .zero, isEnabled: hasEmboss)
-					.layerEffect(ShaderLibrary.pixellate(.float(number)), maxSampleOffset: .zero, isEnabled: isPixellated)
+					.if(hasPattern, transform: { view in
+						view.colorEffect(ShaderLibrary.circleLoader(.boundingRect, .float(startDate.timeIntervalSinceNow)), isEnabled: hasPattern)
+					})
+					.if(hasNoise, transform: { view in
+						view.overlay(
+							RoundedRectangle(cornerRadius: 20)
+							 .colorEffect(ShaderLibrary.noise(.float(startDate.timeIntervalSinceNow)), isEnabled: hasNoise)
+							 .blendMode(.overlay)
+							 .opacity(hasNoise ? 1 : 0)
+					 )
+					})
+					.if(hasEmboss, transform: { view in
+						view.layerEffect(ShaderLibrary.emboss(.float(number)), maxSampleOffset: .zero, isEnabled: hasEmboss)
+					})
+					.if(isPixellated, transform: { view in
+						view.layerEffect(ShaderLibrary.pixellate(.float(number)), maxSampleOffset: .zero, isEnabled: isPixellated)
+					})
 					.onReceive(numberTimer, perform: { _ in
+						guard isPixellated || hasEmboss else { return }
 						if isIncrementing {
 							number += 1
 						} else {
@@ -130,6 +146,7 @@ struct CardView: View {
 				)
 				.cornerRadius(20.0)
 				.padding(40)
+				.background(.blue.opacity(0.001))
 				.offset(y: isTapped ? 220 : 80)
 				.phaseAnimator([1, 1.1], trigger: isTapped) { content, phase in
 					content.scaleEffect(phase)
@@ -167,7 +184,7 @@ struct CardView: View {
 	
 	var content: some View {
 		VStack(alignment: .center) {
-			Text("modern architecture, an isometric tiny house, cute illustration, minimalist, vector art, night view")
+			Text(card.text)
 				.font(.subheadline)
 			HStack(spacing: 8.0) {
 				VStack(alignment: .leading) {
@@ -266,5 +283,5 @@ struct CardView: View {
 }
 
 #Preview {
-    CardView()
+	CardView()
 }
