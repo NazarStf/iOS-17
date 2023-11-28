@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		7443BB772B15DADA00DF8871 /* Shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7443BB762B15DADA00DF8871 /* Shaders.metal */; };
 		7443BB792B15DBE800DF8871 /* example-swiftui-shaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = 7443BB782B15DBE800DF8871 /* example-swiftui-shaders.metal */; };
+		7443BB7B2B15EA7B00DF8871 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7443BB7A2B15EA7B00DF8871 /* Extensions.swift */; };
 		74FF93942B14872300D8902C /* iOS_17App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FF93932B14872300D8902C /* iOS_17App.swift */; };
 		74FF93962B14872300D8902C /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FF93952B14872300D8902C /* ContentView.swift */; };
 		74FF93982B14872300D8902C /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 74FF93972B14872300D8902C /* Item.swift */; };
@@ -19,6 +20,7 @@
 /* Begin PBXFileReference section */
 		7443BB762B15DADA00DF8871 /* Shaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shaders.metal; sourceTree = "<group>"; };
 		7443BB782B15DBE800DF8871 /* example-swiftui-shaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = "example-swiftui-shaders.metal"; sourceTree = "<group>"; };
+		7443BB7A2B15EA7B00DF8871 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		74FF93902B14872300D8902C /* iOS 17.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "iOS 17.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		74FF93932B14872300D8902C /* iOS_17App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS_17App.swift; sourceTree = "<group>"; };
 		74FF93952B14872300D8902C /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -59,9 +61,10 @@
 			children = (
 				74FF93932B14872300D8902C /* iOS_17App.swift */,
 				74FF93952B14872300D8902C /* ContentView.swift */,
+				7443BB7A2B15EA7B00DF8871 /* Extensions.swift */,
+				74FF93972B14872300D8902C /* Item.swift */,
 				7443BB782B15DBE800DF8871 /* example-swiftui-shaders.metal */,
 				7443BB762B15DADA00DF8871 /* Shaders.metal */,
-				74FF93972B14872300D8902C /* Item.swift */,
 				74FF93992B14872500D8902C /* Assets.xcassets */,
 				74FF939B2B14872500D8902C /* Preview Content */,
 			);
@@ -147,6 +150,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				7443BB792B15DBE800DF8871 /* example-swiftui-shaders.metal in Sources */,
+				7443BB7B2B15EA7B00DF8871 /* Extensions.swift in Sources */,
 				7443BB772B15DADA00DF8871 /* Shaders.metal in Sources */,
 				74FF93962B14872300D8902C /* ContentView.swift in Sources */,
 				74FF93982B14872300D8902C /* Item.swift in Sources */,
