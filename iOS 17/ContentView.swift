@@ -13,16 +13,15 @@ struct ContentView: View {
 	var body: some View {
 		ScrollView(.vertical, showsIndicators: false) {
 			title
-			VStack(spacing: 60) {
+			VStack(spacing: 250) {
 				ForEach(cards) { card in
 					CardView(card: card, screenSize: $screenSize)
 						.scrollTransition { content, phase in
-							content
-								.rotation3DEffect(.degrees(phase.isIdentity ? 0 : 60), axis: (x: -1, y: 1, z: 0), perspective: 0.5)
+							content								.scaleEffect(phase.isIdentity ? 1 : 0.8)
 								.rotationEffect(.degrees(phase.isIdentity ? 0 : -30))
+								.rotation3DEffect(.degrees(phase.isIdentity ? 0 : 60), axis: (x: -1, y: 1, z: 0))
+								.blur(radius: phase.isIdentity ? 0 : 30)
 								.offset(y: phase.isIdentity ? 0 : -200)
-								.blur(radius: phase.isIdentity ? 0 : 10)
-								.scaleEffect(phase.isIdentity ? 1 : 0.8)
 						}
 				}
 			}
